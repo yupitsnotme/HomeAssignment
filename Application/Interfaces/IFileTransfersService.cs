@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Interfaces
 {
-    interface IFileTransfersService
+    public interface IFileTransfersService
     {
         public IQueryable<FileTransferViewModel> GetFileTransfers();
         public FileTransferViewModel GetFileTransfer(int id);

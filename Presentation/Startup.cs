@@ -1,7 +1,10 @@
+using Application.Services;
+using DataAccess.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Context;
+using Application.Interfaces;
+using Application.Services;
+using Domain.Interfaces;
+using DataAccess.Repositories;
 
 namespace Presentation
 {
@@ -34,7 +42,7 @@ namespace Presentation
             //        Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<BloggingContext>();
+                .AddEntityFrameworkStores<FileTransferContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -45,11 +53,9 @@ namespace Presentation
             //         > e.g. user opens the Index method and the index method makes two calls for the same repository
             //                class. result: 1 instance of the repository class is created
 
-            services.AddScoped<IBlogsService, BlogsService>();
-            services.AddScoped<IBlogsRepository, BlogsRepositories>();
+            services.AddScoped<IFileTransfersService, FileTransfersService>();
+            services.AddScoped<IFileTransfersRepository, FileTransfersRepository>();
 
-            services.AddScoped<ICategoriesService, CategoriesService>();
-            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
         }
 
