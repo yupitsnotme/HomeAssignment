@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,18 +21,44 @@ namespace Presentation
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<FileTransferContext>(options =>
+           options.UseSqlServer(
+               Configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<BloggingContext>();
             services.AddControllersWithViews();
+            services.AddRazorPages();
+
+            //these lines of code will inform the injector class what implementation to instantiate
+            //for the requested interface
+
+            //AddScoped > 1 instance per request
+            //         > e.g. user opens the Index method and the index method makes two calls for the same repository
+            //                class. result: 1 instance of the repository class is created
+
+            services.AddScoped<IBlogsService, BlogsService>();
+            services.AddScoped<IBlogsRepository, BlogsRepositories>();
+
+            services.AddScoped<ICategoriesService, CategoriesService>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -44,6 +71,8 @@ namespace Presentation
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -51,6 +80,7 @@ namespace Presentation
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
             });
         }
     }
