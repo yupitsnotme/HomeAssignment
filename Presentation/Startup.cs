@@ -12,9 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccess.Context;
 using Application.Interfaces;
-using Application.Services;
 using Domain.Interfaces;
 using DataAccess.Repositories;
 
@@ -85,7 +83,7 @@ namespace Presentation
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=FileTransfer}/{action=Index}/{id?}");
                     endpoints.MapRazorPages();
             });
         }

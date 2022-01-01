@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +11,18 @@ namespace Presentation.Controllers
 {
     public class FileTransferController : Controller
     {
+        private IFileTransfersService fileTransfersService;
+        private IWebHostEnvironment hostEnv;
+        private ILogger<FileTransferController> logger;
 
-
-        public IActionResult Index()
+        public FileTransferController(ILogger<FileTransferController> logger, IFileTransfersService fileTransfersService, IWebHostEnvironment hostEnv)
         {
-            return View();
+            this.fileTransfersService = fileTransfersService;
+            this.hostEnv = hostEnv;
+            this.logger = logger;
         }
-
-        [HttpGet]
-        public IActionResult Create() {
-
+        public IActionResult Index()
+        {   
             return View();
         }
     }
