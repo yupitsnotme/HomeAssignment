@@ -25,5 +25,12 @@ namespace DataAccess.Repositories
         {
             return context.FileTransfers;
         }
+
+        public void AddFile(FileTransfer ft)
+        {
+            context.FileTransfers.Add(ft);
+            context.SaveChanges();
+        }
+
     }
 }

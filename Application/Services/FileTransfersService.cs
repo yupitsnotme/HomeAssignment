@@ -26,7 +26,8 @@ namespace Application.Services
                 ToEmail = fileTransfer.ToEmail,
                 Title = fileTransfer.Title,
                 Message = fileTransfer.Message,
-                Password = fileTransfer.Password
+                Password = fileTransfer.Password,
+                FileName = fileTransfer.FileName
             };
             return result;
         }
@@ -41,9 +42,20 @@ namespace Application.Services
                            ToEmail = f.ToEmail,
                            Title = f.Title,
                            Message = f.Message,
-                           Password = f.Password
+                           Password = f.Password,
+                           FileName = f.FileName
                        };
             return list;
+        }
+
+        public void AddFile(FileTransferViewModel model)
+        {
+            fileTransfersRepository.AddFile(
+                new Domain.Models.FileTransfer()
+                {
+                    FileName = model.FileName,
+                    Id = model.Id
+                });
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Application.Interfaces
     {
         public IQueryable<FileTransferViewModel> GetFileTransfers();
         public FileTransferViewModel GetFileTransfer(int id);
+        public void AddFile(FileTransferViewModel model);
         
     }
 }
